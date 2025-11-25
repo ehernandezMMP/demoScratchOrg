@@ -52,7 +52,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: changed-sources/apexScanResults.sarif
-          token: ${{secrets.UPLOAD_SARIF_TOKEN}}
+          # token: ${{secrets.UPLOAD_SARIF_TOKEN}}
       - name: Read PR Body
         env:
           PR_BODY: ${{github.event.pull_request.body}}
