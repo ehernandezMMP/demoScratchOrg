@@ -48,11 +48,10 @@ jobs:
         run: sfdx scanner:run --format sarif --target 'changed-sources/**/*.cls'
           --category 'Best Practices,Security,Design,Performance,Code Style'
           --outfile 'changed-sources/apexScanResults.sarif'
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@main
-        with:
-          sarif_file: changed-sources/apexScanResults.sarif
-          # token: ${{secrets.UPLOAD_SARIF_TOKEN}}
+      # - name: Upload SARIF file
+      #   uses: github/codeql-action/upload-sarif@v4
+      #   with:
+      #     sarif_file: changed-sources/apexScanResults.sarif
       - name: Read PR Body
         env:
           PR_BODY: ${{github.event.pull_request.body}}
