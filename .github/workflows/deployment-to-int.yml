@@ -70,11 +70,11 @@ jobs:
         run: >
           echo ${{env.APEX_TESTS}}
 
-          sf project deploy start --source-dir 'changed-sources/force-app' --test-level RunSpecifiedTests --tests ${{env.APEX_TESTS}} --json
+          sf project deploy start --force-overwrite --source-dir 'changed-sources/force-app' --test-level RunSpecifiedTests --tests ${{env.APEX_TESTS}} --json
       - name: Deployment - run all tests
         if: ${{ env.APEX_TESTS == 'all' }}
         run: >
           echo ${{env.APEX_TESTS}}
 
-          sf project deploy start --source-dir 'hanged-sources/force-app' --test-level RunLocalTests --json
+          sf project deploy start --force-overwrite --source-dir 'hanged-sources/force-app' --test-level RunLocalTests --json
 # 
