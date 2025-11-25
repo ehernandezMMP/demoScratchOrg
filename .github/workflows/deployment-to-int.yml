@@ -46,7 +46,7 @@ jobs:
       - name: Scan code
         run: sfdx scanner:run --format sarif --target 'changed-sources/**/*.cls'
           --category 'Best Practices,Security,Design,Performance,Code Style'
-          --outfile 'apexScanResults.sarif'
+          --outfile 'changed-sources/apexScanResults.sarif'
       - name: See directory list post scan
         run: ls -R
       - name: Upload SARIF file
