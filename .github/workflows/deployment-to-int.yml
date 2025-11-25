@@ -36,7 +36,7 @@ jobs:
         run: >
           mkdir changed-sources
           
-          sf sgd source delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
+          sf sgd source delta --to "HEAD" --from "HEAD^" --output-dir changed-sources/ --generate-delta --source-dir force-app/ 
       - name: Installing java
         run: sudo apt-get update && sudo apt-get install default-jdk
       - name: Installing SFDX scanner
@@ -46,7 +46,7 @@ jobs:
           --category 'Best Practices,Security,Design,Performance,Code Style'
           --outfile 'apexScanResults.sarif'
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: changed-sources/apexScanResults.sarif
       - name: Read PR Body
