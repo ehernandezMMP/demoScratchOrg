@@ -1,43 +1,39 @@
-name: Deployment to PROD
+name: Deploy to Production
 on:
-  release:
-    types: [published]
-permissions:
-  contents: read
-  security-events: write
-  # only required for workflows in private repositories
-  actions: read
+  push:
+    tags:
+      - 'v*.*.*'
 jobs:
-  deployment-to-prod:
+  deploy-to-prod:
     runs-on: ubuntu-latest
     steps:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Read Release Body
-        env:
-          RELEASE_BODY: ${{github.event.release.body}}
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install Salesforce CLI
         run: |
-          
-          FILE=./parseBody.js
-          if test -f "$FILE"; then
-            echo $RELEASE_BODY > ./body.txt
-            node ./parseBody.js
-            TESTS=$(cat testsToRun.txt)
-            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
-          else
-            TESTS=all
-            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
-          fi
-      - name: Log Tests
+          npm install -g @salesforce/cli
+      - name: Populate auth file with SFDX_URL secret of target org
         run: |
-          echo "Tests to run: ${{env.APEX_TESTS}}"
-      - name: Deployment - run specified tests
-        if: ${{ env.APEX_TESTS != 'all' }}
-        run: >
-          echo ${{env.APEX_TESTS}}
+          echo ${{ secrets.PROD_SFDX_URL}} > ./PROD_SFDX_URL.txt
+      - name: Authenticate to target Org
+        run: sf org login sfdx-url -f ./PROD_SFDX_URL.txt -s -a targetOrg
+      - name: Installing java
+        run: sudo apt-get update && sudo apt-get install default-jdk
+      - name: Installing SFDX analyzer
+        run: sf plugins install code-analyzer
+      - name: Analize code
+        run: sf code-analyzer run --rule-selector Recommended --target ./**/*.cls --severity-threshold 2 --output-file ./apexScanResults.sarif --view detail
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ./apexScanResults.sarif
       - name: Deployment - run all tests
-        if: ${{ env.APEX_TESTS == 'all' }}
         run: >
-          echo ${{env.APEX_TESTS}}
+          sf project deploy start --ignore-conflicts --source-dir ./force-app --test-level RunLocalTests --json
+

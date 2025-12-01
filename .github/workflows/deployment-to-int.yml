@@ -44,7 +44,7 @@ jobs:
           sf sgd source delta --to "HEAD" --from "HEAD^" --output-dir ./changed-sources/ --generate-delta --source-dir ./force-app/ 
       - name: Installing java
         run: sudo apt-get update && sudo apt-get install default-jdk
-      - name: Installing SFDX scanner
+      - name: Installing SFDX analyzer
         run: sf plugins install code-analyzer
       - name: Analize code
         run: sf code-analyzer run --rule-selector Recommended --workspace ./changed-sources --target ./changed-sources/**/*.cls --severity-threshold 2 --output-file ./changed-sources/apexScanResults.sarif --view detail
