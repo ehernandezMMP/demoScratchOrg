@@ -26,4 +26,4 @@ jobs:
               TESTS=all
               echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV 
           fi
-          echo "Extracted APEX_TESTS: $APEX_TESTS"
+          echo "Extracted APEX_TESTS: ${{ env.APEX_TESTS }}"
