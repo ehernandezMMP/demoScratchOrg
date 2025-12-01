@@ -11,6 +11,10 @@ jobs:
   deployment-to-prod:
     runs-on: ubuntu-latest
     steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
       - name: Read Release Body
         env:
           RELEASE_BODY: ${{github.event.release.body}}
