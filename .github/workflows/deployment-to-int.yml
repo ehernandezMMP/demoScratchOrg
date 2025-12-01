@@ -58,14 +58,15 @@ jobs:
         run: |
           
           FILE=./parseBody.js 
-          if test -f "$FILE"; then
-              echo $PR_BODY > ./pr_body.txt
-              node ./parseBody.js              
-              TESTS=$(cat testsToRun.txt)
-              echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV     
+          if test -f "$FILE";
+          then
+            echo $PR_BODY > ./pr_body.txt
+            node ./parseBody.js              
+            TESTS=$(cat testsToRun.txt)
+            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV     
           else
-              TESTS=all
-              echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV 
+            TESTS=all
+            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV 
           fi
       - name: Deployment - run specified tests
         if: ${{ env.APEX_TESTS != 'all' }}

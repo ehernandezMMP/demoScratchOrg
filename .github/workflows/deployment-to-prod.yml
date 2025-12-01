@@ -8,7 +8,7 @@ permissions:
   # only required for workflows in private repositories
   actions: read
 jobs:
-  extract-notes:
+  deployment-to-prod:
     runs-on: ubuntu-latest
     steps:
       - name: Read Release Body
@@ -16,16 +16,20 @@ jobs:
           RELEASE_BODY: ${{github.event.release.body}}
         run: |
           echo $RELEASE_BODY
-          FILE=./parseBody.js 
-          if test -f "$FILE"; then
-              echo $RELEASE_BODY > ./release_body.txt
-              node ./parseBody.js              
-              TESTS=$(cat testsToRun.txt)
-              echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV     
+          FILE=./parseBody.js
+          if test -f "$FILE";
+          then
+            echo $RELEASE_BODY > ./release_body.txt
+            node ./parseBody.js
+            TESTS=$(cat testsToRun.txt)
+            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
           else
-              TESTS=all
-              echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV 
+            TESTS=all
+            echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
           fi
+      - name: Log Tests
+        run: |
+          echo "Tests to run: ${{env.APEX_TESTS}}"
       - name: Deployment - run specified tests
         if: ${{ env.APEX_TESTS != 'all' }}
         run: >
