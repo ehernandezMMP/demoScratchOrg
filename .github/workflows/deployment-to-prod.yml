@@ -19,7 +19,7 @@ jobs:
           FILE=./parseBody.js
           echo $FILE
           if test -f "$FILE"; then
-            echo $RELEASE_BODY > ./release_body.txt
+            echo $RELEASE_BODY > ./body.txt
             node ./parseBody.js
             TESTS=$(cat testsToRun.txt)
             echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
