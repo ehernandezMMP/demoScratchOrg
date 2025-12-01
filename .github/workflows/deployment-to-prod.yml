@@ -15,9 +15,8 @@ jobs:
         env:
           RELEASE_BODY: ${{github.event.release.body}}
         run: |
-          echo $RELEASE_BODY
+          
           FILE=./parseBody.js
-          echo $FILE
           if test -f "$FILE"; then
             echo $RELEASE_BODY > ./body.txt
             node ./parseBody.js
