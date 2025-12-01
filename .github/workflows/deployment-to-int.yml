@@ -47,7 +47,7 @@ jobs:
       - name: Installing SFDX analyzer
         run: sf plugins install code-analyzer
       - name: Analize code
-        run: sf code-analyzer run --rule-selector Recommended --workspace ./changed-sources --target ./changed-sources/**/*.cls --severity-threshold 2 --output-file ./changed-sources/apexScanResults.sarif --view detail
+        run: sf code-analyzer run --rule-selector Recommended --workspace ./changed-sources --target ./changed-sources/**/*.cls --severity-threshold 2 --output-file ./changed-sources/apexScanResults.sarif
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v4
         with:
