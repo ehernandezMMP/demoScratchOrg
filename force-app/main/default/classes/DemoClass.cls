@@ -4,6 +4,6 @@ public with sharing class DemoClass {
         System.debug('Second');
         System.debug('Third');
         System.debug('Fourth');
-        System.debug('Fifth');
+        System.debug('Hotfix1');
     }
 }
