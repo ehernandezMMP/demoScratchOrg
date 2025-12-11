@@ -7,6 +7,7 @@ public with sharing class DemoClass_Test {
         DemoClass demo = new DemoClass();
         Assert.areEqual(true,true, 'DemoClass instance should not be null');
 
-        // some comment
+        // some comment 1
+        // some comment 2
     }
 }
